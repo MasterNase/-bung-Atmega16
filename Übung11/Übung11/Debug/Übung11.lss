@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.6  C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm Mon Jan 30 12:19:58 2017
+AVRASM ver. 2.2.6  C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm Mon Jan 30 20:12:54 2017
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\avrasm\inc\m16def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\avrasm\inc\m16def.inc'
@@ -884,7 +884,7 @@ AVRASM ver. 2.2.6  C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\mai
                                  
                                  .cseg
                                  .org 0
-000000 c032                      	rjmp Main
+000000 c04a                      	rjmp Main
                                  
                                  SSEG_CODE:
 000001 307e
@@ -901,6 +901,9 @@ AVRASM ver. 2.2.6  C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\mai
                                  .endm
                                  
                                  .def work = r16
+                                 .def work2 = r17
+                                 .def count_low = r18
+                                 .def count_high = r19
                                  
                                  INIT_PORTS:
 000006 930f                      	PUSH work		;save work to stack
@@ -921,82 +924,139 @@ AVRASM ver. 2.2.6  C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\mai
 000015 910f                      	POP work
 000016 9508                      	RET	
                                  
-                                 SSEG_OUT:
-000017 930f                      	push work
-000018 b303                      	in work, PINC
-000019 370b                      	cpi work, $7B
-00001a f029                      	breq SSEG_OUT_NEXT
-00001b 910d                      	ld work, X+
-00001c 98da                      	cbi PORTA, 2
-00001d bb05                      	out PORTC, work
-00001e 910f                      	pop work
-00001f cff7                      	rjmp SSEG_OUT
-                                 SSEG_OUT_NEXT:
-000020 e0b1                      	ldi XH, high(Table)
-000021 e0a0                      	ldi XL, low(Table)
-000022 9101                      	ld work, Z+
-000023 350f                      	cpi work, $5F
-000024 f029                      	breq SSEG_OUT_RESET
-000025 bb08                      	out PORTB, work
-000026 2700                      	clr work
-000027 bb05                      	out PORTC, work
-000028 910f                      	pop work
-000029 cfed                      	rjmp SSEG_OUT
-                                 SSEG_OUT_RESET:
-00002a 2700                      	clr work
-00002b bb08                      	out PORTB, work
-00002c bb05                      	out PORTC, work
-00002d e0f1                      	ldi ZH, high(Table)
-00002e e0e0                      	ldi ZL, low(Table)
-00002f 9bd8                      	sbis PORTA, 0
-000030 9ada                      	sbi PORTA, 2
-000031 910f                      	pop work
-000032 cfe4                      	rjmp SSEG_OUT
+                                 ;SSEG_OUT:
+                                 ;	push work
+                                 ;	in work, PINC
+                                 ;	cpi work, $7B
+                                 ;	breq SSEG_OUT_NEXT
+                                 ;	ld work, X+
+                                 ;	cbi PORTA, 2
+                                 ;	out PORTC, work
+                                 ;	pop work
+                                 ;	rjmp SSEG_OUT
+                                 ;SSEG_OUT_NEXT:
+                                 ;	ldi XH, high(Table)
+                                 ;	ldi XL, low(Table)
+                                 ;	ld work, Z+
+                                 ;	cpi work, $5F
+                                 ;	breq SSEG_OUT_RESET
+                                 ;	out PORTB, work
+                                 ;	clr work
+                                 ;	out PORTC, work
+                                 ;	pop work
+                                 ;	rjmp SSEG_OUT
+                                 ;SSEG_OUT_RESET:
+                                 ;	clr work
+                                 ;	out PORTB, work
+                                 ;	out PORTC, work
+                                 ;	ldi ZH, high(Table)
+                                 ;	ldi ZL, low(Table)
+                                 ;	pop work
+                                 ;	rjmp SSEG_OUT
                                  
-                                 COUNT_UP:
+                                 SSEG_OUT:					;advances through the lookup table until the pointer is at the right
+000017 e0f1                      	ldi ZH, high(Table)		;number and outputs it to portb or c
+000018 e0e0                      	ldi ZL, low(Table)
+000019 2f02                      	mov work, count_low
+00001a 3020                      	cpi count_low, $00
+00001b f019                      	breq skip
+                                 Loop_low:					;goes through the list for the low number
+00001c 9631                      	adiw ZL, 1
+00001d 950a                      	dec work
+00001e f7e9                      	brne Loop_low
+                                 skip:						;skips the loop when count_low = 0
+00001f 8100                      	ld work, Z
+000020 bb05                      	out PORTC, work			;outputs the number found in the table to port c
+000021 e116                      	ldi work2, $16
+000022 2f03                      	mov work, count_high
+000023 e0f1                      	ldi ZH, high(Table)
+000024 e0e0                      	ldi ZL, low(Table)
+000025 3000                      	cpi work, $00
+000026 f409                      	brne Loop_high
+000027 9508                      	ret
+                                 Loop_high:					;goes through the table for the high number
+000028 9631                      	adiw ZL, 1
+000029 5106                      	subi work, $16
+00002a f7e9                      	brne Loop_high
+00002b 8100                      	ld work,Z
+00002c bb08                      	out PORTB,work			;outputs the number found in the table to portb
+00002d 9508                      	ret
                                  	
+                                 COUNT_UP:
+00002e 930f                      	push work				;increments count_low
+00002f 931f                      	push work2
+000030 98da                      	cbi PORTA, 2
+000031 3029                      	cpi count_low, $09
+000032 f031                      	breq count_up_high
+000033 9523                      	inc count_low
+000034 940e 0017                 	call SSEG_OUT
+000036 910f                      	pop work
+000037 911f                      	pop work2
+000038 9508                      	ret
+                                 count_up_high:
+000039 e020                      	ldi count_low, $00		;increments count_high and resets count_low
+00003a 3530                      	cpi count_high, $50
+00003b f039                      	breq count_reset
+00003c e106                      	ldi work, $16
+00003d 0f30                      	add count_high, work
+00003e 940e 0017                 	call SSEG_OUT
+000040 910f                      	pop work
+000041 911f                      	pop work2
+000042 9508                      	ret
+                                 count_reset:				;resets the counter after 1 minute has passed	
+000043 e030                      	ldi count_high, $00		
+000044 bb38                      	out PORTB, count_high	;sets portb back to 0
+000045 9ada                      	sbi PORTA, 2			;sets PINA2 to 1
+000046 940e 0017                 	call SSEG_OUT
+000048 910f                      	pop work
+000049 911f                      	pop work2
+00004a 9508                      	ret
                                  	
                                  ; Replace with your application code
                                  Main:
-000033 e004
-000034 bf0e
-000035 e50f
-000036 bf0d                      	INITSP
-000037 940e 0006                     call INIT_PORTS
-000039 940e 004b                 	call Initialize_SSeg
+00004b e004
+00004c bf0e
+00004d e50f
+00004e bf0d                      	INITSP					;Initializes StackPointer
+00004f 940e 0006                     call INIT_PORTS			;initializes ports
+000051 940e 0067                 	call Initialize_SSeg	;initiializes the lookup-table
                                  Reset:	
-00003b e0b1                      	ldi XH, high(Table)
-00003c e0a0                      	ldi XL, low(Table)
-00003d e0f1                      	ldi ZH, high(Table)
-00003e e0e0                      	ldi ZL, low(Table)
-00003f 9101                      	ld work, Z+
-000040 bb08                      	out PORTB, work
-000041 910d                      	ld work, X+
-000042 bb05                      	out PORTC, work
+000053 e0f1                      	ldi ZH, high(Table)		;sets the output to the initial 00
+000054 e0e0                      	ldi ZL, low(Table)		
+000055 8100                      	ld work, Z
+000056 bb08                      	out PORTB, work
+000057 8100                      	ld work, Z
+000058 bb05                      	out PORTC, work
+000059 ef00                      	ldi work, $F0
                                  Loop:	
-000043 99c8                      	sbic PINA, 0
-000044 cff6                      	rjmp Reset
-000045 99c9                      	sbic PINA, 1
-000046 cffc                      	rjmp LOOP
-000047 9b82                      	sbis PIND, 2
-000048 940e 0033                 	call COUNT_UP
-00004a cff8                          rjmp LOOP
+00005a fd00                      	sbrc work, 0
+00005b 9adb                      	sbi PORTA, 3
+00005c ff00                      	sbrs work, 0
+00005d 98db                      	cbi PORTA, 3
+00005e 9502                      	swap work
+00005f 99c8                      	sbic PINA, 0			;loops until input or while pina1 is set
+000060 cff2                      	rjmp Reset
+000061 99c9                      	sbic PINA, 1
+000062 cff7                      	rjmp LOOP
+000063 9982                      	sbic PIND, 2
+000064 940e 002e                 	call COUNT_UP
+000066 cff3                          rjmp LOOP
                                  
                                  Initialize_SSeg:
-00004b 930f                      	push work
-00004c 931f                      	push r17
-00004d e0f0                      	ldi ZH, high(SSEG_CODE << 1)
-00004e e0e2                      	ldi ZL, low(SSEG_CODE << 1)
-00004f e0b1                      	ldi XH, high(Table)
-000050 e0a0                      	ldi XL, low(Table)
-000051 e00a                      	ldi work, SSEG_TABLE_SIZE
+000067 930f                      	push work
+000068 931f                      	push r17
+000069 e0f0                      	ldi ZH, high(SSEG_CODE << 1)
+00006a e0e2                      	ldi ZL, low(SSEG_CODE << 1)
+00006b e0b1                      	ldi XH, high(Table)
+00006c e0a0                      	ldi XL, low(Table)
+00006d e00a                      	ldi work, SSEG_TABLE_SIZE
                                  Initialize_SSeg_Loop:
-000052 9115                      	lpm r17, Z+
-000053 931d                      	st X+, r17
-000054 950a                      	dec work
-000055 f7e1                      	brne Initialize_SSeg_Loop
-000056 911f                      	pop r17
-000057 910f                      	pop work
+00006e 9115                      	lpm r17, Z+
+00006f 931d                      	st X+, r17
+000070 950a                      	dec work
+000071 f7e1                      	brne Initialize_SSeg_Loop
+000072 911f                      	pop r17
+000073 910f                      	pop work
 
 
 RESOURCE USE INFORMATION
@@ -1014,39 +1074,39 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega16" register use summary:
-x  :   3 y  :   0 z  :   3 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   1 y  :   0 z  :   5 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  36 r17:   4 r18:   0 r19:   0 r20:   0 
-r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   3 r27:   3 r28:   0 
-r29:   0 r30:   3 r31:   3 
-Registers used: 8 out of 35 (22.9%)
+r13:   0 r14:   0 r15:   0 r16:  39 r17:   9 r18:   5 r19:   5 r20:   0 
+r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   1 r27:   1 r28:   0 
+r29:   0 r30:   6 r31:   4 
+Registers used: 10 out of 35 (28.6%)
 
 "ATmega16" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   0 add   :   1 adiw  :   2 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   2 brge  :   0 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   3 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
-brne  :   1 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   3 cbi   :   5 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   3 cls   :   0 
+brne  :   4 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   6 cbi   :   6 cbr   :   0 
+clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   1 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   2 cpse  :   0 dec   :   1 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   0 jmp   :   0 
-ld    :   4 ldd   :   0 ldi   :  15 lds   :   0 lpm   :   1 lsl   :   0 
-lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  13 pop   :   6 
-push  :   4 rcall :   0 ret   :   2 reti  :   0 rjmp  :   7 rol   :   0 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   5 sbic  :   2 sbis  :   2 
-sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
+cpi   :   4 cpse  :   0 dec   :   2 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   1 jmp   :   0 
+ld    :   4 ldd   :   0 ldi   :  18 lds   :   0 lpm   :   1 lsl   :   0 
+lsr   :   0 mov   :   2 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  11 pop   :   9 
+push  :   5 rcall :   0 ret   :   7 reti  :   0 rjmp  :   4 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :   6 sbic  :   3 sbis  :   0 
+sbiw  :   0 sbr   :   0 sbrc  :   1 sbrs  :   1 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   1 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   1 std   :   0 sts   :   0 
-sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 21 out of 113 (18.6%)
+sub   :   0 subi  :   1 swap  :   1 tst   :   0 wdr   :   0 
+Instructions used: 27 out of 113 (23.9%)
 
 "ATmega16" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000b2    168     10    178   16384   1.1%
+[.cseg] 0x000000 0x0000ea    224     10    234   16384   1.4%
 [.dseg] 0x000060 0x00010a      0     10     10    1024   1.0%
 [.eseg] 0x000000 0x000000      0      0      0     512   0.0%
 

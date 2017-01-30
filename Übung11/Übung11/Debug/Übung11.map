@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.6  C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm Mon Jan 30 12:19:58 2017
+AVRASM ver. 2.2.6  C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm Mon Jan 30 20:12:54 2017
 
 
 EQU  SIGNATURE_000 0000001e
@@ -606,15 +606,21 @@ EQU  SPMRaddr     00000028
 EQU  INT_VECTORS_SIZE 0000002a
 EQU  SSEG_TABLE_SIZE 0000000a
 DSEG Table        00000100
-CSEG Main         00000033
+CSEG Main         0000004b
 CSEG SSEG_CODE    00000001
 DEF  work         r16
+DEF  work2        r17
+DEF  count_low    r18
+DEF  count_high   r19
 CSEG INIT_PORTS   00000006
 CSEG SSEG_OUT     00000017
-CSEG SSEG_OUT_NEXT 00000020
-CSEG SSEG_OUT_RESET 0000002a
-CSEG COUNT_UP     00000033
-CSEG Initialize_SSeg 0000004b
-CSEG Reset        0000003b
-CSEG Loop         00000043
-CSEG Initialize_SSeg_Loop 00000052
+CSEG skip         0000001f
+CSEG Loop_low     0000001c
+CSEG Loop_high    00000028
+CSEG COUNT_UP     0000002e
+CSEG count_up_high 00000039
+CSEG count_reset  00000043
+CSEG Initialize_SSeg 00000067
+CSEG Reset        00000053
+CSEG Loop         0000005a
+CSEG Initialize_SSeg_Loop 0000006e

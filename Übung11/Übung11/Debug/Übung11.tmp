@@ -1,18 +1,18 @@
 <ASSEMBLER_INFO>
  <VERSION>2.2.6</VERSION>
  <DEVICE>"ATmega16"</DEVICE>
- <WORKING_DIR>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\Debug</WORKING_DIR>
+ <WORKING_DIR>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\Debug</WORKING_DIR>
  <INCLUDE_PATH>
   <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\avrasm\inc</DIR>
   <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</SOURCE_FILE>
+ <SOURCE_FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</SOURCE_FILE>
  <INCLUDED_FILES>
   <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\avrasm\inc\m16def.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\Debug\Übung11.obj</FILE>
+  <FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\Debug\Übung11.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>Übung11.hex</FILE>
@@ -22,17 +22,20 @@
   <FILE>Übung11.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <Table><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>11</LINE></Table>
-  <Main><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>85</LINE></Main>
-  <SSEG_CODE><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>18</LINE></SSEG_CODE>
-  <INIT_PORTS><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>30</LINE></INIT_PORTS>
-  <SSEG_OUT><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>49</LINE></SSEG_OUT>
-  <SSEG_OUT_NEXT><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>59</LINE></SSEG_OUT_NEXT>
-  <SSEG_OUT_RESET><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>70</LINE></SSEG_OUT_RESET>
-  <COUNT_UP><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>81</LINE></COUNT_UP>
-  <Initialize_SSeg><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>107</LINE></Initialize_SSeg>
-  <Reset><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>89</LINE></Reset>
-  <Loop><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>98</LINE></Loop>
-  <Initialize_SSeg_Loop><FILE>C:\Users\wurz1\Documents\Atmel Studio\7.0\Übung11\Übung11\main.asm</FILE><LINE>115</LINE></Initialize_SSeg_Loop>
+  <Table><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>11</LINE></Table>
+  <Main><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>141</LINE></Main>
+  <SSEG_CODE><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>18</LINE></SSEG_CODE>
+  <INIT_PORTS><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>33</LINE></INIT_PORTS>
+  <SSEG_OUT><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>82</LINE></SSEG_OUT>
+  <skip><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>92</LINE></skip>
+  <Loop_low><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>88</LINE></Loop_low>
+  <Loop_high><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>102</LINE></Loop_high>
+  <COUNT_UP><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>110</LINE></COUNT_UP>
+  <count_up_high><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>121</LINE></count_up_high>
+  <count_reset><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>131</LINE></count_reset>
+  <Initialize_SSeg><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>167</LINE></Initialize_SSeg>
+  <Reset><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>145</LINE></Reset>
+  <Loop><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>153</LINE></Loop>
+  <Initialize_SSeg_Loop><FILE>C:\Users\wurz1\OneDrive\Dokumente\Universität\Informatik\Info C\Übung Atmega16\Übung11\Übung11\main.asm</FILE><LINE>175</LINE></Initialize_SSeg_Loop>
  </LABELS>
 </ASSEMBLER_INFO>
